@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+
+<body>
+   <h1>BAT BALL STUMP GAME</h1>
+   <div class="btnc">
+      <button onclick="
+      let computerchoice= generatecomputerchoice();
+       let resultmsg = getResult('bat', computerchoice);
+            showresult('bat', computerchoice,resultmsg);">BAT</button>
+
+<button onclick="
+ computerchoice= generatecomputerchoice();
+  resultmsg = getResult('ball', computerchoice);
+      showresult('ball', computerchoice,resultmsg);">BAll</button>
+
+      <button onclick="
+          computerchoice= generatecomputerchoice();
+          resultmsg = getResult('stump', computerchoice);
+                     showresult('stump', computerchoice,resultmsg);">stump</button>
+                     <button onclick="localStorage.clear()
+                        resetscore(scorestr);
+                     ">Reset</button>
+
+   </div>
+   <h3 id="user-move"></h3>
+   <h3 id="computer-move"></h3>
+   <h3 id="result"></h3>
+   <h3 id="score"></h3>
+   <script>
+      // let age =21;
+      // function printage(){
+      //     console.log(`your age is ${age}`)
+      // }
+      // printage();
+      // age =44;
+      // printage();
+
+      //return function
+      // function generateRandomMove(){
+      //     let random =Math.random();
+      //     let randomMove= random*3;
+      //     return randomMove;
+      // }
+      // console.log(generateRandomMove());
+      //parameters
+      // function sum(a,b){
+      //     let sum= a + b;
+      //     return sum;
+      // }
+      // console.log(sum(4,5));
+
+
+      //for cricket  
+      let scorestr = localStorage.getItem('score');
+      let score;
+      resetscore(scorestr);
+      function resetscore(scorestr){
+       score = scorestr ? JSON.parse(scorestr) : {
+         win: 0,
+         loss: 0,
+         tie: 0, 
+      }; 
+   
+   //    if (scorestr !== undefined){
+   //       score = JSON.parse(scorestr);
+   //    } else {
+   //     score = {
+   //       win: 0,
+   //       loss: 0,
+   //       tie: 0, 
+   //    };
+   // }
+      score.displayscore=function () {
+            return `NO of matches won: ${score.win}, loss:${score.loss},tie:${score.tie}`;
+         };
+         showresult();
+      }
+      function generatecomputerchoice() {
+         // this will generate random no. between 0 and 3
+         let randomnumber = Math.random() * 3;
+         if (randomnumber > 0 && randomnumber <= 1) {
+            return 'bat';
+            
+         }
+         else if (randomnumber > 1 && randomnumber <= 2) {
+            return 'ball';
+           
+         }
+         else {
+            return 'stump';
+           
+         }
+      }
+      function getResult(usermove, computermove) {
+         if (usermove === 'bat') {
+            if (computermove === 'ball') {
+               score.win++;
+               return 'user won';
+            }
+            else if (computermove === 'bat') {
+               score.tie++;
+               return 'tie';
+            }
+            else if (computermove === 'stump') {
+               score.loss++;
+               return 'computer has won';
+            }
+
+         }
+         else if (usermove === 'ball') {
+            if (computermove === 'ball') {
+               score.tie++;
+               return 'it is a tie';
+            }
+            else if (computermove === 'bat') {
+               score.loss++;
+               return 'computer won';
+            }
+            else if (computermove === 'stump') {
+               score.win++;
+               return 'user won';
+            }
+
+         }
+
+         else {
+            if (computermove === 'ball') {
+               score.loss++;
+               return 'computer has won';
+            }
+            else if (computermove === 'bat') {
+               score.win++;
+               return 'user won';
+            }
+            else if (computermove === 'stump') {
+               score.tie++;
+               return 'it is a tie';
+            }
+         }
+      }
+      function showresult(usermove, computermove, result) {
+         localStorage.setItem('score',JSON.stringify(score));
+         console.log(score);
+         document.querySelector('#user-move').innerText = usermove? `you have chosen ${usermove}`:'';
+
+         document.querySelector('#computer-move').innerText = computermove? `computer have chosen ${computermove}`:'';
+
+         document.querySelector('#result').innerText= result || '';
+
+         document.querySelector('#score').innerText =score.displayscore();
+
+         // alert(`you have chosen ${usermove}. computer choice is ${computermove} 
+         //  ${result}
+          
+         //  ${score.displayscore()}
+         //  `);
+      }
+   </script>
+</body>
+
+</html>
